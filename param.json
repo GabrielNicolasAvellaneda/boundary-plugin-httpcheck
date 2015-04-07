@@ -1,15 +1,16 @@
 {
    "items": [
       {
-         "source": "google",
+         "source": "groups.google.com/forum/",
          "pollInterval": "5",
-         "method": "GET",
+         "method": "POST",
          "protocol": "http",
-         "url": "www.google.com",
+         "url": "groups.google.com/forum/",
          "username": "",
          "password": "",
          "postdata": [
-            ""
+			"key1=1",
+			"key2=2"
          ]
       },
       {
@@ -21,7 +22,6 @@
          "username": "",
          "password": "",
          "postdata": [
-            ""
          ]
       },
       {
@@ -33,7 +33,6 @@
          "username": "",
          "password": "",
          "postdata": [
-            ""
          ]
       }
    ],

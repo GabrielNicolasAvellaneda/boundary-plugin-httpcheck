@@ -3,6 +3,8 @@
     "icon" : "icon.png",
     "command" : "node index.js",
     "postExtract" : "npm install",
+    "command_lua" : "boundary-meter init.lua",
+    "postExtract_lua" : "",
     "ignore" : "node_modules",
 
     "metrics" : [ "HTTP_RESPONSETIME" ],

@@ -6,6 +6,9 @@ lib-cov
 *.out
 *.pid
 *.gz
+*.pyc
+*.sh
+*.bat
 
 pids
 logs
@@ -13,3 +16,4 @@ results
 
 npm-debug.log
 node_modules
+.idea
