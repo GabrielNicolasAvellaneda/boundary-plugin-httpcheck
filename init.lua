@@ -7,6 +7,7 @@ local https = require('https')
 local url = require('url')
 local os = require('os')
 local timer = require('timer')
+local table = require('table')
 
 local isEmpty = framework.string.isEmpty
 local trim = framework.string.trim
@@ -69,23 +70,39 @@ params.version = '1.1'
 
 -- for each item create a WebRequestDataSource
 
-for _,item in pairs(params.items) do
 
-  local options = url.parse(item.url)
-  options.protocol = options.protocol or item.protocol or 'http'
-  options.auth = options.auth or (not isEmpty(item.username) and not isEmpty(item.password) and item.username .. ':' .. item.password)
-  options.method = item.method
-  options.meta = item.source
-  options.post_data = item.postData
+function createPollers() 
 
-  options.wait_for_end = false
+  local pollers_list = {}
 
-  p(options)
+  for _,item in pairs(params.items) do
 
-  local data_source = WebRequestDataSource:new(options)
-  data_source:fetch(nil, timed(function () p('this is the callback') end)) 
+    local options = url.parse(item.url)
+    options.protocol = options.protocol or item.protocol or 'http'
+    options.auth = options.auth or (not isEmpty(item.username) and not isEmpty(item.password) and item.username .. ':' .. item.password)
+    options.method = item.method
+    options.meta = item.source
+    options.post_data = item.postData
 
+    options.wait_for_end = false
+
+    p(options)
+
+    local data_source = WebRequestDataSource:new(options)
+
+
+    data_source:fetch(nil, timed(function () p('this is the callback') end)) 
+
+    local time_interval = item.timeInterval or params.timeInterval
+    local poller = DataSourcePoller(time_interval, data_source)
+    table.insert(pollers_list, poller)
+  end
+
+  return pollers_list
 end
+
+
+
 
 
 --[[
