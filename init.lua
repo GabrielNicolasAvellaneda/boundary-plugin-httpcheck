@@ -1,4 +1,4 @@
-local framework = require('framework')
+local framework = require('./modules/framework.lua')
 local Plugin = framework.Plugin
 local DataSource = framework.DataSource
 local DataSourcePoller = framework.DataSourcePoller
@@ -8,19 +8,9 @@ local url = require('url')
 local os = require('os')
 local timer = require('timer')
 
-local params = framework.params
-params.name = 'LUA demo plugin'
-params.version = '1.0'
-
-local item = {}
-item.uri = 'http://www.google.com.br' -- protocol, host, port and path
-item.pollInterval = 5 -- seconds between polls
-
-local options = url.parse(item.uri)
-options.method = 'GET'
-options.meta = 'this is the source'
-options.postData = nil
-p(item)
+local isEmpty = framework.string.isEmpty
+local trim = framework.string.trim
+local timed = framework.util.timed
 
 local WebRequestDataSource = DataSource:extend()
 function WebRequestDataSource:initialize(params)
@@ -29,13 +19,18 @@ function WebRequestDataSource:initialize(params)
 		options = url.parse(params)
 	end
 
+  self.wait_for_end = options.wait_for_end or false
+
 	self.options = options
+end
+
+function WebRequestDataSource:request(reqOptions, callback)
+  return http.get(reqOptions, callback)
 end
 
 function WebRequestDataSource:fetch(context, callback)
 	local headers = nil 
-	local startTime = os.time()
-	local data = ''
+	local buffer = ''
 	local reqOptions = {
 		host = self.options.host,
 		port = self.options.port,
@@ -44,27 +39,56 @@ function WebRequestDataSource:fetch(context, callback)
 	}
 
 	local success = function (res) 
-		p(res.headers)
-		local fn = function(d)
-			local elapsedTime = os.time() - startTime
-			if callback then
-				callback({data = d, elapsedTime = elapsedTime}, options.meta)
-			end
-		end
-		
-		res:on('end', function () p('end') end) 
+		res:on('end', function ()
+  
+      if self.wait_for_end then
+        callback(buffer, self.meta)
+      end
+  
+    end) 
 
-		res:on('data', function (d) 
-			data = data .. d
-			p('data')
-		end)
+    res:once('data', function (data)
+      if not self.wait_for_end then
+        callback(buffer, self.meta)
+      end
+    end)
+
+		res:on('data', function (data) 
+			buffer = buffer .. data
+    end)
 
 	end
 
-	local req = http.request(reqOptions, success)
+	local req = self:request(reqOptions, success)
 	req:propagate('error', self)
-	req:done()
 end
+
+local params = framework.params
+params.name = 'Boundary Http Check Plugin'
+params.version = '1.1'
+
+-- for each item create a WebRequestDataSource
+
+for _,item in pairs(params.items) do
+
+  local options = url.parse(item.url)
+  options.protocol = options.protocol or item.protocol or 'http'
+  options.auth = options.auth or (not isEmpty(item.username) and not isEmpty(item.password) and item.username .. ':' .. item.password)
+  options.method = item.method
+  options.meta = item.source
+  options.post_data = item.postData
+
+  options.wait_for_end = false
+
+  p(options)
+
+  local data_source = WebRequestDataSource:new(options)
+  data_source:fetch(nil, timed(function () p('this is the callback') end)) 
+
+end
+
+
+--[[
 
 local dataSource = WebRequestDataSource:new(options)
 dataSource:fetch(nil, function (result) p(result.elapsedTime) end)
@@ -103,4 +127,4 @@ end
 
 --plugin:run()
 timer.setTimeout(10000, function () p('finished') end)
-
+]]
