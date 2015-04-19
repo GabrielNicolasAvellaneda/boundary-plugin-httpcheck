@@ -1,7 +1,7 @@
 {
    "items": [
    	{
-         "source": "test01",
+         "source": "Test HTTP GET (www.microsoft.com)",
          "pollInterval": 5,
          "method": "GET",
          "url": "http://www.microsoft.com",
@@ -10,6 +10,61 @@
          "postdata": [
          ]
       },
+      {
+         "source": "Test HTTP POST (postcatcher.in)",
+         "pollInterval": 5,
+         "method": "POST",
+         "url": "http://postcatcher.in/catchers/553323a0f436c103000012ad",
+         "username": "",
+         "password": "",
+         "postdata": [
+		 "key1=value1",
+	 	 "key2=value2"
+         ]
+      },
+      {
+         "source": "TEST HTTPS GET (github.com)",
+         "pollInterval": 5,
+         "method": "GET",
+         "url": "http://github.com/",
+         "username": "",
+         "password": "",
+         "postdata": [
+         ]
+      },
+      {
+         "source": "TEST HTTP GET Basic Auth (localhost:8080/manager/status)",
+         "pollInterval": 5,
+         "method": "GET",
+         "url": "http://localhost:8080/manager/status",
+         "username": "admin",
+         "password": "password",
+         "postdata": [
+         ]
+      },
+      {
+         "source": "TEST HTTP GET Redirect and Basic Auth (localhost:8080/manager)",
+         "pollInterval": 5,
+         "method": "GET",
+         "url": "http://localhost:8080/manager",
+         "username": "username",
+         "password": "password",
+         "postdata": [
+         ]
+      },
+      {
+         "source": "TEST HTTP GET 404 (localhost:8080/status)",
+         "pollInterval": 5,
+         "method": "GET",
+         "url": "http://localhost:8080/status",
+         "username": "username",
+         "password": "password",
+         "postdata": [
+         ]
+      }
+
+
+
    ],
    "pollInterval": 1 
 }

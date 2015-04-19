@@ -1,0 +1,8 @@
+
+* Changes between 1.1 and 1.2
+  * Added support for basic authentication
+  * Added support for specifiying username and password inside de url. 
+  * Added support for specifiying a specific port inside the url. http://localhost:8080
+  * Added support for specifiying the protocol from the url field.
+  * Added support for HTTPS
+  * Rewritten to use the Boundary Plugin Framework

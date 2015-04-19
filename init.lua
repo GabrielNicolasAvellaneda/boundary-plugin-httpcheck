@@ -3,21 +3,14 @@ local Plugin = framework.Plugin
 local DataSourcePoller = framework.DataSourcePoller
 local WebRequestDataSource = framework.WebRequestDataSource
 local PollerCollection = framework.PollerCollection
-local http = require('http')
-local https = require('https')
 local url = require('url')
-local os = require('os')
-local timer = require('timer')
-local table = require('table')
-local Emitter = require('core').Emitter
 
 local isEmpty = framework.string.isEmpty
 local trim = framework.string.trim
-local timed = framework.util.timed
 
 local params = framework.params
 params.name = 'Boundary Http Check Plugin'
-params.version = '1.1'
+params.version = '1.2'
 
 function createPollers(params) 
   local pollers = PollerCollection:new() 
@@ -29,7 +22,7 @@ function createPollers(params)
     options.auth = options.auth or (not isEmpty(item.username) and not isEmpty(item.password) and item.username .. ':' .. item.password)
     options.method = item.method
     options.meta = item.source
-    options.post_data = item.postData
+    options.data = item.postdata
 
     options.wait_for_end = false
 
@@ -47,9 +40,9 @@ end
 local pollers = createPollers(params)
 
 local plugin = Plugin:new(params, pollers)
-function plugin:onParseValues(data, info)
+function plugin:onParseValues(data, info, exec_time)
   local result = {}
-  result['HTTP_RESPONSETIME'] = {value = 1.0, source = info} 
+  result['HTTP_RESPONSETIME'] = {value = tonumber(exec_time), source = info} 
 
   return result
 end
