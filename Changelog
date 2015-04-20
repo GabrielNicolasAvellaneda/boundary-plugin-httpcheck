@@ -1,5 +1,6 @@
 
 * Changes between 1.1 and 1.2
+  * If the http response code is not OK it will set the metric value to -1
   * Added support for basic authentication
   * Added support for specifiying username and password inside de url. 
   * Added support for specifiying a specific port inside the url. http://localhost:8080

@@ -1,17 +1,17 @@
 {
    "items": [
    	{
-         "source": "Test HTTP GET (www.microsoft.com)",
+         "source": "HTTP GET http://en.wikipedia.org/wiki/Lua_(programming_language)",
          "pollInterval": 5,
          "method": "GET",
-         "url": "http://www.microsoft.com",
+         "url": "http://en.wikipedia.org/wiki/Lua_(programming_language)",
          "username": "",
          "password": "",
          "postdata": [
          ]
       },
       {
-         "source": "Test HTTP POST (postcatcher.in)",
+         "source": "HTTP POST (postcatcher.in)",
          "pollInterval": 5,
          "method": "POST",
          "url": "http://postcatcher.in/catchers/553323a0f436c103000012ad",
@@ -23,7 +23,7 @@
          ]
       },
       {
-         "source": "TEST HTTPS GET (github.com)",
+         "source": "HTTPS GET (github.com)",
          "pollInterval": 5,
          "method": "GET",
          "url": "http://github.com/",
@@ -33,7 +33,7 @@
          ]
       },
       {
-         "source": "TEST HTTP GET Basic Auth (localhost:8080/manager/status)",
+         "source": "HTTP GET Basic Auth (localhost:8080/manager/status)",
          "pollInterval": 5,
          "method": "GET",
          "url": "http://localhost:8080/manager/status",
@@ -43,7 +43,7 @@
          ]
       },
       {
-         "source": "TEST HTTP GET Redirect and Basic Auth (localhost:8080/manager)",
+         "source": "HTTP GET Redirect and Basic Auth (localhost:8080/manager)",
          "pollInterval": 5,
          "method": "GET",
          "url": "http://localhost:8080/manager",
@@ -53,12 +53,12 @@
          ]
       },
       {
-         "source": "TEST HTTP GET 404 (localhost:8080/status)",
+         "source": "HTTP GET 404 (localhost:8080/status)",
          "pollInterval": 5,
          "method": "GET",
          "url": "http://localhost:8080/status",
-         "username": "username",
-         "password": "password",
+         "username": "",
+         "password": "",
          "postdata": [
          ]
       }

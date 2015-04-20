@@ -40,9 +40,14 @@ end
 local pollers = createPollers(params)
 
 local plugin = Plugin:new(params, pollers)
-function plugin:onParseValues(data, info, exec_time)
+function plugin:onParseValues(data, more)
   local result = {}
-  result['HTTP_RESPONSETIME'] = {value = tonumber(exec_time), source = info} 
+  local value = tonumber(more['response_time']) 
+  if more.status_code < 200 or more.status_code >= 300 then
+    value = -1
+  end
+
+  result['HTTP_RESPONSETIME'] = {value = value, source = more['info']} 
 
   return result
 end
