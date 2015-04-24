@@ -6,13 +6,12 @@ local PollerCollection = framework.PollerCollection
 local url = require('url')
 
 local isEmpty = framework.string.isEmpty
-local trim = framework.string.trim
 
 local params = framework.params
 params.name = 'Boundary Http Check Plugin'
 params.version = '1.2'
 
-function createPollers(params) 
+local function createPollers(params) 
   local pollers = PollerCollection:new() 
 
   for _,item in pairs(params.items) do
@@ -40,7 +39,7 @@ end
 local pollers = createPollers(params)
 
 local plugin = Plugin:new(params, pollers)
-function plugin:onParseValues(data, more)
+function plugin:onParseValues(_, more)
   local result = {}
   local value = tonumber(more['response_time']) 
   if more.status_code < 200 or more.status_code >= 300 then

@@ -26,7 +26,7 @@
          "source": "HTTPS GET (github.com)",
          "pollInterval": 5,
          "method": "GET",
-         "url": "http://github.com/",
+         "url": "https://github.com/",
          "username": "",
          "password": "",
          "postdata": [
