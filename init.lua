@@ -5,11 +5,12 @@ local WebRequestDataSource = framework.WebRequestDataSource
 local PollerCollection = framework.PollerCollection
 local url = require('url')
 
-local isEmpty = framework.string.isEmpty
+local auth = framework.util.auth
 
 local params = framework.params
 params.name = 'Boundary Http Check Plugin'
 params.version = '1.2'
+params.tags = 'http'
 
 local function createPollers(params) 
   local pollers = PollerCollection:new() 
@@ -18,7 +19,7 @@ local function createPollers(params)
 
     local options = url.parse(item.url)
     options.protocol = options.protocol or item.protocol or 'http'
-    options.auth = options.auth or (not isEmpty(item.username) and not isEmpty(item.password) and item.username .. ':' .. item.password)
+    options.auth = options.auth or auth(item.username, item.password)
     options.method = item.method
     options.meta = item.source
     options.data = item.postdata
@@ -39,14 +40,14 @@ end
 local pollers = createPollers(params)
 
 local plugin = Plugin:new(params, pollers)
-function plugin:onParseValues(_, more)
+function plugin:onParseValues(_, extra)
   local result = {}
-  local value = tonumber(more['response_time']) 
-  if more.status_code < 200 or more.status_code >= 300 then
+  local value = tonumber(extra.response_time) 
+  if extra.status_code < 200 or extra.status_code >= 300 then
     value = -1
   end
 
-  result['HTTP_RESPONSETIME'] = {value = value, source = more['info']} 
+  result['HTTP_RESPONSETIME'] = {value = value, source = extra.info} 
 
   return result
 end
